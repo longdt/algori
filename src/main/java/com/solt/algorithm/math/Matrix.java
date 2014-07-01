@@ -160,11 +160,14 @@ public class Matrix {
 	}
 	
 	public double[] toPackedArray() {
-		double[] result = new double[rows * cols];
-		for (int i = 0; i < rows; ++i) {
-			System.arraycopy(cells[i], 0, result, i * cols, cols);
+		double[] array = new double[rows * cols];
+		int index = 0;
+		for (int r = 0; r < rows; ++r) {
+			for (int c = 0; c < cols; ++c) {
+				 array[index++] = cells[r][c];
+			}
 		}
-		return result;
+		return array;
 	}
 
 	public void randomize(double min, double max) {
@@ -174,5 +177,27 @@ public class Matrix {
 				cells[i][j] = Math.random() * scale + min;
 			}
 		}
+	}
+
+	public int fromPackedArray(double[] array, int index) {
+		for (int r = 0; r < rows; ++r) {
+			for (int c = 0; c < cols; ++c) {
+				cells[r][c] = array[index++];
+			}
+		}
+		return index;
+	}
+	
+	public int fromPackedArray(Double[] array, int index) {
+		for (int r = 0; r < rows; ++r) {
+			for (int c = 0; c < cols; ++c) {
+				cells[r][c] = array[index++];
+			}
+		}
+		return index;
+	}
+
+	public int size() {
+		return rows * cols;
 	}
 }

@@ -114,4 +114,8 @@ public class FeedforwardLayer {
 		}
 	}
 
+	public int getMatrixSize() {
+		return matrix == null ? 0 : matrix.size();
+	}
+
 }

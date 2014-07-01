@@ -95,6 +95,34 @@ public abstract class GeneticAlgorithm<CHROMOSOME_TYPE extends Chromosome<?, ?>>
 	public int getPopulationSize() {
 		return populationSize;
 	}
+	
+	public void setPopulationSize(int populationSize) {
+		this.populationSize = populationSize;
+	}
+
+	public void setCutLength(int cutLength) {
+		this.cutLength = cutLength;
+	}
+
+	public void setPreventRepeat(boolean preventRepeat) {
+		this.preventRepeat = preventRepeat;
+	}
+
+	public void setMutationPercent(double mutationPercent) {
+		this.mutationPercent = mutationPercent;
+	}
+
+	public void setPercentToMate(double percentToMate) {
+		this.percentToMate = percentToMate;
+	}
+
+	public void setMatingPopulation(double matingPopulation) {
+		this.matingPopulation = matingPopulation;
+	}
+
+	public void setPool(ExecutorService pool) {
+		this.pool = pool;
+	}
 
 }
 

@@ -81,13 +81,25 @@ public abstract class Chromosome<GENE_TYPE, GA_TYPE extends GeneticAlgorithm> {
 	public void setGene(int i, GENE_TYPE value) {
 		genes[i] = value;
 	}
+	
+	public void setGenesDirect(GENE_TYPE[] genes) {
+		this.genes = genes;
+	}
 
 	public GA_TYPE getGeneticAlgorithm() {
 		return geneticAlgorithm;
 	}
+	
+	public void setGeneticAlgorithm(GA_TYPE geneticAlgorithm) {
+		this.geneticAlgorithm = geneticAlgorithm;
+	}
 
-	private GENE_TYPE[] getGenes() {
+	public GENE_TYPE[] getGenes() {
 		return genes;
+	}
+	
+	public void setGenes(GENE_TYPE[] genes) {
+		this.genes = genes;
 	}
 
 }

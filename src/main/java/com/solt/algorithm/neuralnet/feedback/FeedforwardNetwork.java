@@ -6,6 +6,7 @@ import java.util.List;
 import com.solt.algorithm.neuralnet.NeuralNetworkError;
 import com.solt.algorithm.neuralnet.feedback.FeedforwardLayer.LayerType;
 import com.solt.algorithm.neuralnet.util.ErrorCalculation;
+import com.solt.algorithm.neuralnet.util.MatrixCODEC;
 
 public class FeedforwardNetwork {
 	private FeedforwardLayer inputLayer;
@@ -71,13 +72,39 @@ public class FeedforwardNetwork {
 		}
 		return errCal.calculateRMS();
 	}
+	
+	@Override
+	public Object clone() {
+		FeedforwardNetwork result = cloneStructure();
+		final Double[] data = MatrixCODEC.networkToArray(this);
+		MatrixCODEC.arrayToNetwork(data, result);
+		return result;
+	}
 
+	public FeedforwardNetwork cloneStructure() {
+		FeedforwardNetwork result = new FeedforwardNetwork();
+		for (FeedforwardLayer layer : layers) {
+			FeedforwardLayer cloneLayer = new FeedforwardLayer(layer.getNeuronCount());
+			result.addLayer(cloneLayer);
+		}
+		result.finalizeStructure();
+		return result;
+	}
+	
 	public FeedforwardLayer getOutputLayer() {
 		return outputLayer;
 	}
 
 	public List<FeedforwardLayer> getLayers() {
 		return layers;
+	}
+
+	public int getWeightMatrixSize() {
+		int result = 0;
+		for (final FeedforwardLayer layer : this.layers) {
+			result += layer.getMatrixSize();
+		}
+		return result;
 	}
 
 }
