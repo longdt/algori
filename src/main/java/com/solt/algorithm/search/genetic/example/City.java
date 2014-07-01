@@ -19,4 +19,12 @@ public class City {
 		return Math.sqrt(xdif * xdif + ydif * ydif);
 	}
 
+	public int getx() {
+		return xpos;
+	}
+
+	public int gety() {
+		return ypos;
+	}
+
 }

@@ -1,17 +1,20 @@
 package com.solt.algorithm.search.genetic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
 public abstract class GeneticAlgorithm<CHROMOSOME_TYPE extends Chromosome<?, ?>> {
+	private static final ChromosomeComparator comparator = new ChromosomeComparator();
 	protected int populationSize;
 	protected int cutLength;
 	protected boolean preventRepeat;
 	protected double mutationPercent;
 	protected double percentToMate;
-	private double matingPopulation;
+	protected double matingPopulation;
 	private ExecutorService pool;
 	private CHROMOSOME_TYPE[] chromosomes;
 	
@@ -28,11 +31,41 @@ public abstract class GeneticAlgorithm<CHROMOSOME_TYPE extends Chromosome<?, ?>>
 			CHROMOSOME_TYPE child1 = chromosomes[offspringIndex];
 			CHROMOSOME_TYPE child2 = chromosomes[offspringIndex + 1];
 			MateWorker<CHROMOSOME_TYPE> worker = new MateWorker<CHROMOSOME_TYPE>(mother, father, child1, child2);
+			try {
+				if (pool != null) {
+					tasks.add(worker);
+				} else {
+					worker.call();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			offspringIndex += 2;
 		}
+		if (pool != null) {
+			try {
+				pool.invokeAll(tasks);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		sortChromosomes();
 	}
 	
+	public void sortChromosomes() {
+		Arrays.sort(chromosomes, comparator);
+	}
+
 	public CHROMOSOME_TYPE getChromosome(int i) {
 		return chromosomes[i];
+	}
+	
+	public void setChromosome(int i, CHROMOSOME_TYPE chromosome) {
+		chromosomes[i] = chromosome;
+	}
+	
+	public void setChromosomes(CHROMOSOME_TYPE[] chromosomes) {
+		this.chromosomes = chromosomes;
 	}
 
 	public int getCutLength() {
@@ -63,4 +96,18 @@ public abstract class GeneticAlgorithm<CHROMOSOME_TYPE extends Chromosome<?, ?>>
 		return populationSize;
 	}
 
+}
+
+class ChromosomeComparator implements Comparator<Chromosome<?, ?>> {
+
+	@Override
+	public int compare(Chromosome<?, ?> o1, Chromosome<?, ?> o2) {
+		if (o1.getCost() > o2.getCost()) {
+			return 1;
+		} else if (o1.getCost() < o2.getCost()) {
+			return -1;
+		}
+		return 0;
+	}
+	
 }

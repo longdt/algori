@@ -33,7 +33,7 @@ public class TSPChromosome extends Chromosome<Integer, TSPGeneticAlgorithm>{
 	public void calculateCost() {
 		double cost = 0;
 		for (int i = 0; i < cities.length - 1; ++i) {
-			double dist = cities[getGene(i)].proximity(cities[getGene(i + i)]);
+			double dist = cities[getGene(i)].proximity(cities[getGene(i + 1)]);
 			cost += dist;
 		}
 		super.cost = cost;
